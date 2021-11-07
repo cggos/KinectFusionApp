@@ -4,6 +4,7 @@
 #include <kinectfusion.h>
 
 #include <fstream>
+#include <iostream>
 
 using cv::cuda::GpuMat;
 

@@ -16,17 +16,21 @@ find_package(CUDA 8.0 REQUIRED)
 IF (CUDA_FOUND)
     include_directories("${CUDA_INCLUDE_DIRS}")
     # Optional: Specify the arch of your CUDA hardware here
-    SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-O3;-std=c++11 -gencode arch=compute_52,code=sm_52)
+    # SET(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-O3;-std=c++11 -arch=sm_30 -gencode arch=compute_30,code=sm_30)
+    # set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -O3 -std=c++11 -arch compute_30 -code sm_30)
+    set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS} -O3 -std=c++11 -arch compute_60 -code sm_60)
 ENDIF ()
 
 ## OpenCV
 # Optional: Set OpenCV_DIR if you want to use a custom version of OpenCV
-SET("OpenCV_DIR" "/opt/opencv/usr/local/share/OpenCV")
+set("OpenCV_DIR" "/opt/opencv_34/share/OpenCV/")
 find_package(OpenCV 3.0 REQUIRED)
 if (OpenCV_INCLUDE_DIRS)
     include_directories("${OpenCV_INCLUDE_DIRS}")
     link_directories(${OpenCV_DIR}/lib)
 endif (OpenCV_INCLUDE_DIRS)
+
+message(============= ${OpenCV_INCLUDE_DIRS})
 
 ## Eigen3
 find_package(Eigen3 REQUIRED)

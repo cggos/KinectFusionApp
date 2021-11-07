@@ -3,6 +3,8 @@
 
 #include <kinectfusion.h>
 
+#include <iostream>
+
 using Matf31da = Eigen::Matrix<float, 3, 1, Eigen::DontAlign>;
 using Matrix3frm = Eigen::Matrix<float, 3, 3, Eigen::RowMajor>;
 

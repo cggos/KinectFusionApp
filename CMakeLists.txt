@@ -2,9 +2,11 @@ cmake_minimum_required(VERSION 3.0)
 
 project(KinectFusionApplication)
 
+add_definitions(-w)
+
 # Setting some paths
-set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+# set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
+# set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 # Path of find modules
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})

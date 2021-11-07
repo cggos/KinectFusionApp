@@ -136,7 +136,8 @@ namespace kinectfusion {
     struct GlobalConfiguration {
         // The overall size of the volume (in mm). Will be allocated on the GPU and is thus limited by the amount of
         // storage you have available. Dimensions are (x, y, z).
-        int3 volume_size { make_int3(512, 512, 512) };
+        // int3 volume_size { make_int3(512, 512, 512) };
+        int3 volume_size;
 
         // The amount of mm one single voxel will represent in each dimension. Controls the resolution of the volume.
         float voxel_scale { 2.f };
@@ -176,6 +177,10 @@ namespace kinectfusion {
         float angle_threshold { 20.f };
         // Number of ICP iterations for each level from original level 0 to highest scaled level (sparse to coarse)
         std::vector<int> icp_iterations {10, 5, 4};
+
+        GlobalConfiguration() {
+            volume_size = make_int3(512, 512, 512);
+        }
     };
 
 

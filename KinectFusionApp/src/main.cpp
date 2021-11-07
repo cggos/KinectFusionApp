@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <memory>
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wall"
@@ -54,11 +55,11 @@ auto make_camera(const std::shared_ptr<cpptoml::table>& toml_config)
 
     const auto camera_type = *toml_config->get_qualified_as<std::string>("camera.type");
     if (camera_type == "Pseudo") {
-        std::stringstream source_path {};
-        source_path << data_path << "source/" << recording_name << "/";
-        camera = std::make_unique<PseudoCamera>(source_path.str());
+        // std::stringstream source_path {};
+        // source_path << data_path << "source/" << recording_name << "/";
+        // camera = std::make_unique<PseudoCamera>(source_path.str());
     } else if (camera_type == "Xtion") {
-        camera = std::make_unique<XtionCamera>();
+        // camera = std::make_unique<XtionCamera>();
     } else if (camera_type == "RealSense") {
         if(*toml_config->get_qualified_as<bool>("camera.realsense.live")) {
             camera = std::make_unique<RealSenseCamera>();
@@ -87,6 +88,9 @@ void main_loop(const std::unique_ptr<DepthCamera> camera, const kinectfusion::Gl
         bool success = pipeline.process_frame(frame.depth_map, frame.color_map);
         if (!success)
             std::cout << "Frame could not be processed" << std::endl;
+
+        cv::imshow("frame.color_map", frame.color_map);
+        cv::imshow("frame.depth_map", frame.depth_map);
 
         //3 Display the output
         cv::imshow("Pipeline Output", pipeline.get_last_model_frame());

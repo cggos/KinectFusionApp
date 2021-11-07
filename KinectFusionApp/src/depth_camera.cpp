@@ -9,12 +9,14 @@
 #pragma GCC diagnostic ignored "-Wall"
 #pragma GCC diagnostic ignored "-Wextra"
 #pragma GCC diagnostic ignored "-Weffc++"
-#include <PS1080.h>
+// #include <PS1080.h>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv/cv.hpp>
 
 #pragma GCC diagnostic pop
+
+#if 0
 
 // ### Pseudo ###
 PseudoCamera::PseudoCamera(const std::string& _data_path) :
@@ -182,6 +184,8 @@ CameraParameters XtionCamera::get_parameters() const
     return cam_params;
 }
 
+#endif 
+
 // ### Intel RealSense
 RealSenseCamera::RealSenseCamera() : pipeline{}
 {
@@ -189,8 +193,8 @@ RealSenseCamera::RealSenseCamera() : pipeline{}
     // Same dimensions and color stream has format BGR 8bit
     rs2::config configuration {};
     configuration.disable_all_streams();
-    configuration.enable_stream(RS2_STREAM_COLOR, 1280, 720, RS2_FORMAT_BGR8, 30);
-    configuration.enable_stream(RS2_STREAM_DEPTH, 1280, 720, RS2_FORMAT_Z16, 30);
+    configuration.enable_stream(RS2_STREAM_COLOR, 640, 480, RS2_FORMAT_BGR8, 30);
+    configuration.enable_stream(RS2_STREAM_DEPTH, 640, 480, RS2_FORMAT_Z16, 30);
 
     // Use the first detected device, if any
     rs2::context ctx {};

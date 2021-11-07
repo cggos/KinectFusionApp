@@ -13,7 +13,7 @@
 #pragma GCC diagnostic ignored "-Wextra"
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wunused-variable"
-#include <OpenNI.h>
+// #include <OpenNI.h>
 #pragma GCC diagnostic pop
 
 #include <librealsense2/rs.hpp>
@@ -40,6 +40,8 @@ public:
     virtual InputFrame grab_frame() const = 0;
     virtual CameraParameters get_parameters() const = 0;
 };
+
+#if 0
 
 /*
  * For testing purposes. This camera simply loads depth frames stored on disk.
@@ -79,6 +81,8 @@ private:
 
     CameraParameters cam_params;
 };
+
+#endif
 
 /*
  * Provides depth frames acquired by an Intel Realsense camera.
