@@ -1,13 +1,38 @@
 # KinectFusionApp
 
+* [KinectFusionAppLib_comments](https://github.com/DreamWaterFound/KinectFusionAppLib_comments): 泡泡机器人线下会议公开，自己对KinectFusionApp和KinectFusionLib的源码注释
+
 ---
 
 This is a sample application using the [KinectFusionLib](https://github.com/chrdiller/KinectFusionLib). It implements cameras (for data acquisition from recordings as well as from a live depth sensor) as data sources. The resulting fused volume can then be exported into a pointcloud or a dense surface mesh.
 
-Dependencies
-------------
+## Dependencies
 
-* **GCC 5** as higher versions don't work with current nvcc (as of 2017).
+### GCC 5.4
+
+* Ubuntu16.04存在gcc-5.5.0的情况下安装gcc-5.4.0
+  ```bash
+  # 下载gcc源码并解压
+  # [https://ftp.gnu.org/gnu/gcc/gcc-5.4.0/](https://ftp.gnu.org/gnu/gcc/gcc-5.4.0/)
+  cd gcc-5.4.0
+  ./contrib/download_prerequisites
+  cd ..
+  mkdir gcc-build-5.4.0
+  cd gcc-build-5.4.0
+  ../gcc-5.4.0/configure --enable-checking=release --enable-languages=c,c++ --disable-multilib
+  make -j8
+  sudo make install
+
+  # 软连接
+  sudo unlink /usr/bin/gcc && sudo ln -s /usr/local/bin/gcc /usr/bin/gcc
+  sudo unlink /usr/bin/g++ && sudo ln -s /usr/local/bin/g++ /usr/bin/g++
+  ```
+
+### CUDA 8.0
+
+* 因CUDA8.0默认gcc 5.4.0，我Ubuntu16.04中最低gcc5.5.0，编译KF报错如下；将gcc降到5.4.0后，问题解决（ref: [https://github.com/tensorflow/tensorflow/issues/10220](https://github.com/tensorflow/tensorflow/issues/10220)）
+
+  ![cuda-errors](./imgs/cuda-errors.png)
 
 * **CUDA 8.0** or higher. In order to provide real-time reconstruction, this library relies on graphics hardware. Running it exclusively on CPU is not possible. Adjust CUDA architecture: Set the CUDA architecture version to that of your graphics hardware.
   
@@ -60,16 +85,43 @@ Dependencies
   Result = PASS
   ```
 
+### OpenCV 3
+
 * **OpenCV 3.0** or higher. This library heavily depends on the GPU features of OpenCV that have been refactored in the 3.0 release. Therefore, OpenCV 2 is not supported.
   ```sh
-  # build opencv 3.4
-  -D WITH_CUDA=ON \
-  -D CUDA_GENERATION=Pascal \
+  #!/bin/sh
+  cmake \
+      -D CMAKE_BUILD_TYPE=Release \
+      -D CMAKE_INSTALL_PREFIX=/opt/opencv_34 \
+      -D BUILD_TESTS=OFF \
+      -D WITH_VTK=OFF \
+      -D WITH_MATLAB=OFF \
+      -D WITH_TBB=ON \
+      -D WITH_IPP=OFF \
+      -D WITH_FFMPEG=OFF \
+      -D WITH_V4L=ON \
+      -D WITH_CUDA=ON \
+      -D CUDA_GENERATION=Pascal \
+      -D ENABLE_PRECOMPILED_HEADERS=OFF \
+      -D OPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules \
+      ../opencv/
   ```
+
+### Eigen3
 
 * **Eigen3** for efficient matrix and vector operations.
 
+### Sensors
+
+#### Realsense
+
 * **librealsense2-dev** for data acquisition with a live depth sensor.
+
+#### Kinect
+
+* [Ubuntu16.04 Kinect V1相机驱动安装方法（无Ros)](https://blog.csdn.net/qq_42037180/article/details/97704945)
+
+* [Ubuntu16.04安装OpenNI2](https://blog.csdn.net/renhaofan/article/details/80991095)
 
 ## Usage
 
@@ -86,3 +138,5 @@ Use the following keys to perform actions:
 ```sh
 ./KinectFusionApp/KinectFusionApp -c ../KinectFusionApp/config.toml
 ```
+
+![run-d435i](./imgs/run-d435i.png)
